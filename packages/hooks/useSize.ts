@@ -1,13 +1,13 @@
-import { computed, inject, provide, ComputedRef } from "vue";
+import { computed, inject, provide, ComputedRef } from 'vue';
 
-import { SizeType } from "../../types/all";
+import { SizeType } from '../../types/all';
 
 export function useSize(props: { size: SizeType }) {
-  const xesize = inject("xesize", null as ComputedRef<SizeType> | null);
+  const xesize = inject('xesize', null as ComputedRef<SizeType> | null);
   const computeSize = computed(() => {
     return props.size || (xesize ? xesize.value : null);
   });
-  provide("xesize", computeSize);
+  provide('xesize', computeSize);
 
   return computeSize;
 }

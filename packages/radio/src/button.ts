@@ -5,36 +5,38 @@ import GlobalConfig from '../../v-x-e-table/src/conf';
 import { useSize } from '../../hooks/useSize';
 
 import {
-  VxeRadioPropTypes,
-  VxeRadioConstructor,
-  VxeRadioEmits,
+  VxeRadioButtonPropTypes,
   VxeRadioGroupConstructor,
+  VxeRadioButtonConstructor,
+  VxeRadioButtonEmits,
   VxeRadioGroupPrivateMethods,
-  RadioMethods,
+  RadioButtonMethods,
   VxeFormConstructor,
   VxeFormPrivateMethods,
   VxeFormDefines,
 } from '../../../types/all';
 
 export default defineComponent({
-  name: 'VxeRadio',
+  name: 'VxeRadioButton',
   props: {
-    modelValue: [String, Number, Boolean] as PropType<VxeRadioPropTypes.ModelValue>,
-    label: { type: [String, Number, Boolean] as PropType<VxeRadioPropTypes.Label>, default: null },
-    title: [String, Number] as PropType<VxeRadioPropTypes.Title>,
-    content: [String, Number] as PropType<VxeRadioPropTypes.Content>,
-    disabled: Boolean as PropType<VxeRadioPropTypes.Disabled>,
-    name: String as PropType<VxeRadioPropTypes.Name>,
+    modelValue: [String, Number, Boolean] as PropType<VxeRadioButtonPropTypes.ModelValue>,
+    label: {
+      type: [String, Number, Boolean] as PropType<VxeRadioButtonPropTypes.Label>,
+      default: null,
+    },
+    title: [String, Number] as PropType<VxeRadioButtonPropTypes.Title>,
+    content: [String, Number] as PropType<VxeRadioButtonPropTypes.Content>,
+    disabled: Boolean as PropType<VxeRadioButtonPropTypes.Disabled>,
     strict: {
-      type: Boolean as PropType<VxeRadioPropTypes.Strict>,
-      default: () => GlobalConfig.radio.strict,
+      type: Boolean as PropType<VxeRadioButtonPropTypes.Strict>,
+      default: () => GlobalConfig.radioButton.strict,
     },
     size: {
-      type: String as PropType<VxeRadioPropTypes.Size>,
-      default: () => GlobalConfig.radio.size || GlobalConfig.size,
+      type: String as PropType<VxeRadioButtonPropTypes.Size>,
+      default: () => GlobalConfig.radioButton.size || GlobalConfig.size,
     },
   },
-  emits: ['update:modelValue', 'change'] as VxeRadioEmits,
+  emits: ['update:modelValue', 'change'] as VxeRadioButtonEmits,
   setup(props, context) {
     const { slots, emit } = context;
     const $xeform = inject<(VxeFormConstructor & VxeFormPrivateMethods) | null>('$xeform', null);
@@ -46,22 +48,22 @@ export default defineComponent({
 
     const xID = XEUtils.uniqueId();
 
-    const $xeradio = {
+    const computeSize = useSize(props);
+
+    const $xeradiobutton = {
       xID,
       props,
       context,
-    } as unknown as VxeRadioConstructor;
+    } as unknown as VxeRadioButtonConstructor;
 
-    const computeSize = useSize(props);
-
-    let radioMethods = {} as RadioMethods;
+    let radioButtonMethods = {} as RadioButtonMethods;
 
     const computeDisabled = computed(() => {
       return props.disabled || ($xeradiogroup && $xeradiogroup.props.disabled);
     });
 
     const computeName = computed(() => {
-      return $xeradiogroup ? $xeradiogroup.name : props.name;
+      return $xeradiogroup ? $xeradiogroup.name : null;
     });
 
     const computeStrict = computed(() => {
@@ -73,12 +75,18 @@ export default defineComponent({
       return $xeradiogroup ? $xeradiogroup.props.modelValue === label : modelValue === label;
     });
 
-    const handleValue = (label: VxeRadioPropTypes.Label, evnt: Event) => {
+    radioButtonMethods = {
+      dispatchEvent(type, params, evnt) {
+        emit(type, Object.assign({ $radioButton: $xeradiobutton, $event: evnt }, params));
+      },
+    };
+
+    const handleValue = (label: VxeRadioButtonPropTypes.Label, evnt: Event) => {
       if ($xeradiogroup) {
         $xeradiogroup.handleChecked({ label }, evnt);
       } else {
         emit('update:modelValue', label);
-        radioMethods.dispatchEvent('change', { label }, evnt);
+        radioButtonMethods.dispatchEvent('change', { label }, evnt);
         // 自动更新校验状态
         if ($xeform && $xeformiteminfo) {
           $xeform.triggerItemEvent(evnt, $xeformiteminfo.itemConfig.field, label);
@@ -103,27 +111,19 @@ export default defineComponent({
       }
     };
 
-    radioMethods = {
-      dispatchEvent(type, params, evnt) {
-        emit(type, Object.assign({ $radio: $xeradio, $event: evnt }, params));
-      },
-    };
-
-    Object.assign($xeradio, radioMethods);
-
     const renderVN = () => {
       const vSize = computeSize.value;
       const isDisabled = computeDisabled.value;
       const name = computeName.value;
-      const isChecked = computeChecked.value;
+      const checked = computeChecked.value;
       return h(
         'label',
         {
           class: [
             'vxe-radio',
+            'vxe-radio-button',
             {
               [`size--${vSize}`]: vSize,
-              'is--checked': isChecked,
               'is--disabled': isDisabled,
             },
           ],
@@ -134,16 +134,10 @@ export default defineComponent({
             class: 'vxe-radio--input',
             type: 'radio',
             name,
-            checked: isChecked,
+            checked,
             disabled: isDisabled,
             onChange: changeEvent,
             onClick: clickEvent,
-          }),
-          h('span', {
-            class: [
-              'vxe-radio--icon',
-              isChecked ? 'vxe-icon-radio-checked' : 'vxe-icon-radio-unchecked',
-            ],
           }),
           h(
             'span',
@@ -156,11 +150,11 @@ export default defineComponent({
       );
     };
 
-    $xeradio.renderVN = renderVN;
+    Object.assign($xeradiobutton, {
+      renderVN,
+      dispatchEvent,
+    });
 
-    return $xeradio;
-  },
-  render() {
-    return this.renderVN();
+    return renderVN;
   },
 });

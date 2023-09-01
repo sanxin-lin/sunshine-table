@@ -1,13 +1,47 @@
+// requestAnimationFrame(() => {
+//   console.log('init')
+// });
+
+// setTimeout(() => {
+//   console.log('init')
+// }, 0);
+
+// const _ob = new MutationObserver(mutations => {
+//   console.log('init')
+// })
+
+// _ob.observe(document.body, { attributes: true })
+
 import { createApp } from 'vue';
 import App from './App.vue';
 import i18n from './i18n';
-import { VxeIcon, VxeButton } from '../../packages/all'
-import './style/index.scss'
-import '../../styles/all.scss'
-
+import {
+  VxeIcon,
+  VxeButton,
+  VxeRadio,
+  VxeRadioButton,
+  VxeRadioGroup,
+  VxeCheckbox,
+  VxeCheckboxGroup,
+  VxeSwitch,
+  VxeTextarea,
+  VxeModuleExport,
+} from '../../packages/all';
+import './style/index.scss';
+import '../../styles/all.scss';
 const app = createApp(App);
 
-app.use(VxeIcon).use(VxeButton)
+app
+  .use(VxeIcon)
+  .use(VxeButton)
+  .use(VxeRadioButton)
+  .use(VxeRadio)
+  .use(VxeRadioGroup)
+  .use(VxeCheckbox)
+  .use(VxeCheckboxGroup)
+  .use(VxeSwitch)
+  .use(VxeTextarea)
+  .use(VxeModuleExport);
 
 app.config.globalProperties.$t = i18n.global.t;
 

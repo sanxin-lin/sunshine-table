@@ -15,3 +15,12 @@ export function nextZIndex() {
 export function getLastZIndex() {
   return DomZIndex.getCurrent();
 }
+
+
+export function parseFile (file: File) {
+  const name = file.name
+  const tIndex = XEUtils.lastIndexOf(name, '.')
+  const type = name.substring(tIndex + 1, name.length).toLowerCase()
+  const filename = name.substring(0, tIndex)
+  return { filename, type }
+}
