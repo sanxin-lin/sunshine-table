@@ -19,7 +19,7 @@ import { VxeRadioButtonProps } from '../radio-button'
 import { VxeRadioGroupProps } from '../radio-group'
 
 export interface VXETableConfigOptions {
-  VUE_APP_VXE_TABLE_VERSION: string
+  VUE_APP_VXE_TABLE_VERSION?: string
   size?: SizeType
   zIndex?: number
   version?: number

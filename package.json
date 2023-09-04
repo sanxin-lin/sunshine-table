@@ -2,12 +2,15 @@
   "name": "sunshine-table",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.min.js",
+  "module": "dist/index.esm.js",
+  "author": "sunshine_lin",
+  "type": "module",
   "scripts": {
-    "serve": "vue-cli-service serve"
+    "dev": "rollup -c -w",
+    "build": "rollup -c"
   },
   "keywords": [],
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/resize-observer-browser": "^0.1.7",
@@ -47,7 +50,18 @@
     "vue-i18n": "^9.1.7",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.2",
-    "xe-utils": "^3.5.12"
+    "xe-utils": "^3.5.12",
+    "@rollup/plugin-commonjs": "^25.0.4",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@types/lodash": "^4.14.197",
+    "eslint-plugin-prettier": "^5.0.0",
+    "lodash": "^4.17.21",
+    "prettier": "^3.0.2",
+    "rollup": "^3.28.0",
+    "rollup-plugin-alias": "^2.2.0",
+    "rollup-plugin-dts": "^6.0.0",
+    "rollup-plugin-typescript2": "^0.35.0",
+    "rollup-plugin-uglify": "^6.0.4"
   },
   "dependencies": {
     "dom-zindex": "^1.0.0"

@@ -6,6 +6,9 @@ import CheckboxView from './views/checkbox/Index.vue';
 import SwitchView from './views/switch/Index.vue';
 import TextareaView from './views/textarea/Index.vue';
 import FileView from './views/file/Index.vue';
+import LoadingView from './views/loading/Index.vue'
+import ModalView from './views/modal/Index.vue'
+import FormView from './views/form/Index.vue'
 
 export const enum ViewType {
   Icon = 'Icon',
@@ -14,7 +17,10 @@ export const enum ViewType {
   Checkbox = 'Checkbox',
   Switch = 'Switch',
   Textarea = 'Textarea',
-  File = 'File'
+  File = 'File',
+  Loading = 'Loading',
+  Modal = 'Modal',
+  Form = 'Form'
 }
 
 export const views = [
@@ -45,6 +51,18 @@ export const views = [
   {
     view: FileView,
     type: ViewType.File,
+  },
+  {
+    view: LoadingView,
+    type: ViewType.Loading,
+  },
+  {
+    view: ModalView,
+    type: ViewType.Modal,
+  },
+  {
+    view: FormView,
+    type: ViewType.Form,
   },
 ];
 
@@ -88,6 +106,18 @@ export const useViews = () => {
     {
       content: ViewType.File,
       onClick: () => handleChangeTab(ViewType.File),
+    },
+    {
+      content: ViewType.Loading,
+      onClick: () => handleChangeTab(ViewType.Loading),
+    },
+    {
+      content: ViewType.Modal,
+      onClick: () => handleChangeTab(ViewType.Modal),
+    },
+    {
+      content: ViewType.Form,
+      onClick: () => handleChangeTab(ViewType.Form),
     },
   ];
 

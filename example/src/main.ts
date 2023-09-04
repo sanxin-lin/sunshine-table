@@ -26,6 +26,10 @@ import {
   VxeSwitch,
   VxeTextarea,
   VxeModuleExport,
+  VxeLoading,
+  VxeModal,
+  VxeForm,
+  VxeFormItem,
 } from '../../packages/all';
 import './style/index.scss';
 import '../../styles/all.scss';
@@ -41,7 +45,11 @@ app
   .use(VxeCheckboxGroup)
   .use(VxeSwitch)
   .use(VxeTextarea)
-  .use(VxeModuleExport);
+  .use(VxeModuleExport)
+  .use(VxeLoading)
+  .use(VxeModal)
+  .use(VxeForm)
+  .use(VxeFormItem);
 
 app.config.globalProperties.$t = i18n.global.t;
 

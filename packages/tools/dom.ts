@@ -63,3 +63,16 @@ export function getEventTargetNode(
   }
   return { flag: false };
 }
+
+const scrollIntoViewIfNeeded = 'scrollIntoViewIfNeeded'
+const scrollIntoView = 'scrollIntoView'
+
+export function scrollToView (elem: any) {
+  if (elem) {
+    if (elem[scrollIntoViewIfNeeded]) {
+      elem[scrollIntoViewIfNeeded]()
+    } else if (elem[scrollIntoView]) {
+      elem[scrollIntoView]()
+    }
+  }
+}
